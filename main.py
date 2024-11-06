@@ -1,5 +1,7 @@
 from address_book import AddressBook
 from record import Record
+from address import Address
+from email import Email
 from constants import NOT_FOUND_MESSAGE, COMMANDS
 from data_storage import save_data, load_data
 
@@ -68,6 +70,49 @@ def add_birthday(args, book: AddressBook):
         return "Birthday added."
     return NOT_FOUND_MESSAGE
 
+@input_error
+def get_birthdays_in_days(args, book: AddressBook):
+    if len(args) != 1:
+        return "Invalid number of arguments. Usage: birthdays [days]"    
+    days = int(args[0])
+    return book.get_upcoming_birthdays(days)
+
+@input_error
+def add_email(args, book: AddressBook):
+    if len(args) != 2:
+        return "Invalid number of arguments. Usage: add-email [name] [email]"    
+    name, email = args
+    record = book.find(name)
+    email = Email(email)
+    if record:
+        record.add_email(email)
+        return "Email added."
+    return NOT_FOUND_MESSAGE
+    
+@input_error
+def show_email(args, book: AddressBook):
+    if len(args) != 1:
+        return "Invalid number of arguments. Usage: show-email [name]"    
+    name = args[0]
+    record = book.find(name)
+    if record:
+        if record.emails:
+            return record.emails
+        return "Email not added to this contact."
+    return NOT_FOUND_MESSAGE
+    
+@input_error
+def add_address(args, book: AddressBook):
+    if len(args) != 2:
+        return "Invalid number of arguments. Usage: add-address [name] [address]"    
+    name, address = args
+    record = book.find(name)
+    address = Address(address)
+    if record:
+        record.add_address(address)
+        return "Address added."
+    return NOT_FOUND_MESSAGE
+
 
 @input_error
 def show_birthday(args, book: AddressBook):
@@ -79,6 +124,18 @@ def show_birthday(args, book: AddressBook):
         if record.birthday:
             return record.birthday
         return "Birthday not added to this contact."
+    return NOT_FOUND_MESSAGE
+
+@input_error
+def show_address(args, book: AddressBook):
+    if len(args) != 1:
+        return "Invalid number of arguments. Usage: show-address [name]"   
+    name = args[0]
+    record = book.find(name)
+    if record:
+        if record.addresses:
+            return record.addresses
+        return "Address not added to this contact."
     return NOT_FOUND_MESSAGE
 
 
@@ -110,6 +167,16 @@ def main():
                 print(show_birthday(args, book))
             case cmd if cmd in COMMANDS["birthdays"]:
                 print(book.get_upcoming_birthdays())
+            case cmd if cmd in COMMANDS["birthdays-in-days"]:
+                print(get_birthdays_in_days(args, book))
+            case cmd if cmd in COMMANDS["add-email"]:
+                print(add_email(args, book))
+            case cmd if cmd in COMMANDS["email"]:
+                print(show_email(args, book))
+            case cmd if cmd in COMMANDS["add-address"]:
+                print(add_address(args, book))
+            case cmd if cmd in COMMANDS["address"]:
+                print(show_address(args, book))
             case _:
                 print("Invalid command.")
 

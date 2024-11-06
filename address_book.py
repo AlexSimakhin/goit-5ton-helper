@@ -42,7 +42,7 @@ class AddressBook(UserDict):
         """
         del self.data[name]
 
-    def get_upcoming_birthdays(self):
+    def get_upcoming_birthdays(self, days: int = 7):
         """
         Знаходить контакти з днями народження, які відбудуться протягом наступного тижня.
         Якщо день народження припадає на вихідний, переносить привітання на наступний понеділок.
@@ -52,29 +52,29 @@ class AddressBook(UserDict):
         """
         today = datetime.today().date()
         upcoming_birthdays = []
-        for name, record in self.data.items():
-            birthday = record.birthday
-            if birthday:
-                # Отримуємо день народження в поточному році
-                birthday_this_year = birthday.value.replace(year=today.year).date()
-                # Якщо день народження вже минув цього року, перевіряємо наступний рік
+        records = self.data.values()
+
+        for record in records:
+            if record.birthday:
+                birthday_date = record.birthday.value.date() if isinstance(record.birthday.value, datetime) else record.birthday.value
+
+                birthday_this_year = birthday_date.replace(year=today.year)
+
                 if birthday_this_year < today:
                     birthday_this_year = birthday_this_year.replace(year=today.year + 1)
-                # Перевіряємо, чи потрапляє день народження в інтервал найближчого тижня
-                days_until_birthday = (birthday_this_year - today).days
-                if 0 <= days_until_birthday <= 7:
-                    congratulation_date = birthday_this_year
-                    # Переносимо на наступний понеділок, якщо день народження випадає на вихідні
-                    if congratulation_date.weekday() == 5:  # Субота
-                        congratulation_date += timedelta(days=2)
-                    elif congratulation_date.weekday() == 6:  # Неділя
-                        congratulation_date += timedelta(days=1)
 
-                    # Додаємо контакт до списку
+                days_until_birthday = (birthday_this_year - today).days
+
+                if 0 <= days_until_birthday <= days:
+                    if birthday_this_year.weekday() == 5:
+                        birthday_this_year += timedelta(days=2)
+                    elif birthday_this_year.weekday() == 6:
+                        birthday_this_year += timedelta(days=1)
                     upcoming_birthdays.append({
-                        "name": name,
-                        "congratulation_date": congratulation_date.strftime(DATE_FORMAT)
+                        "name": record.name.value,
+                        "birthday_date": birthday_this_year.strftime('%d.%m.%Y')
                     })
+
         return upcoming_birthdays
 
     def __str__(self):
