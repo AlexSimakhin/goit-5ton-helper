@@ -8,6 +8,7 @@ COMMANDS = {
   "hello": {"hello"},
   "add": {"add"},
   "change": {"change"},
+  "delete": {"delete", "remove"},
   "phone": {"phone"},
   "all": {"all"},
   "add-birthday": {"add-birthday"},
