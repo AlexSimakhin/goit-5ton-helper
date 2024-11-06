@@ -1,4 +1,5 @@
 from field import Field
 
 class Address(Field):
-    pass
+    def __repr__(self):
+        return str(self.value)

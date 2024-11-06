@@ -13,6 +13,11 @@ COMMANDS = {
   "add-birthday": {"add-birthday"},
   "show-birthday": {"show-birthday"},
   "birthdays": {"birthdays"},
+  "birthdays-in-days": {"birthdays-in-days"},
+  "add-address": {"add-address"},
+  "address": {"address"},
+  "add-email": {"add-email"},
+  "email": {"email"},
 }
 
 FILE_DATA_PKL = "goit-5ton-helper/addressbook.pkl"
