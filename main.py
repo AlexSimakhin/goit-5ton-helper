@@ -47,6 +47,18 @@ def change_contact(args, book: AddressBook):
 
 
 @input_error
+def delete_contact(args, book: AddressBook):
+    if len(args) != 1:
+        return "Invalid number of arguments. Usage: delete [name]"
+    name = args[0]
+    record = book.find(name)
+    if record is None:
+        return NOT_FOUND_MESSAGE
+    book.delete(name)
+    return "Contact deleted."
+
+
+@input_error
 def show_phone(args, book: AddressBook):
     if len(args) != 1:
         return "Invalid number of arguments. Usage: phone [name]"
@@ -100,6 +112,8 @@ def main():
                 print(add_contact(args, book))
             case cmd if cmd in COMMANDS["change"]:
                 print(change_contact(args, book))
+            case cmd if cmd in COMMANDS["delete"]:
+                print(delete_contact(args, book))
             case cmd if cmd in COMMANDS["phone"]:
                 print(show_phone(args, book))
             case cmd if cmd in COMMANDS["all"]:
