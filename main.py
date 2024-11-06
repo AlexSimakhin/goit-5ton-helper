@@ -1,6 +1,8 @@
 from address_book import AddressBook
 from record import Record
 from notes import Notes
+from address import Address
+from email import Email
 from constants import NOT_FOUND_MESSAGE, COMMANDS
 from data_storage import save_data, load_data, save_notes, load_notes
 
@@ -48,6 +50,18 @@ def change_contact(args, book: AddressBook):
 
 
 @input_error
+def delete_contact(args, book: AddressBook):
+    if len(args) != 1:
+        return "Invalid number of arguments. Usage: delete [name]"
+    name = args[0]
+    record = book.find(name)
+    if record is None:
+        return NOT_FOUND_MESSAGE
+    book.delete(name)
+    return "Contact deleted."
+
+
+@input_error
 def show_phone(args, book: AddressBook):
     if len(args) != 1:
         return "Invalid number of arguments. Usage: phone [name]"
@@ -67,6 +81,49 @@ def add_birthday(args, book: AddressBook):
     if record:
         record.add_birthday(date)
         return "Birthday added."
+    return NOT_FOUND_MESSAGE
+
+@input_error
+def get_birthdays_in_days(args, book: AddressBook):
+    if len(args) != 1:
+        return "Invalid number of arguments. Usage: birthdays [days]"    
+    days = int(args[0])
+    return book.get_upcoming_birthdays(days)
+
+@input_error
+def add_email(args, book: AddressBook):
+    if len(args) != 2:
+        return "Invalid number of arguments. Usage: add-email [name] [email]"    
+    name, email = args
+    record = book.find(name)
+    email = Email(email)
+    if record:
+        record.add_email(email)
+        return "Email added."
+    return NOT_FOUND_MESSAGE
+    
+@input_error
+def show_email(args, book: AddressBook):
+    if len(args) != 1:
+        return "Invalid number of arguments. Usage: show-email [name]"    
+    name = args[0]
+    record = book.find(name)
+    if record:
+        if record.emails:
+            return record.emails
+        return "Email not added to this contact."
+    return NOT_FOUND_MESSAGE
+    
+@input_error
+def add_address(args, book: AddressBook):
+    if len(args) != 2:
+        return "Invalid number of arguments. Usage: add-address [name] [address]"    
+    name, address = args
+    record = book.find(name)
+    address = Address(address)
+    if record:
+        record.add_address(address)
+        return "Address added."
     return NOT_FOUND_MESSAGE
 
 
@@ -100,6 +157,19 @@ def add_note(notes: Notes):
 def show_all_notes(notes: Notes):
     return notes.show_all_notes()
 
+@input_error
+def show_address(args, book: AddressBook):
+    if len(args) != 1:
+        return "Invalid number of arguments. Usage: show-address [name]"   
+    name = args[0]
+    record = book.find(name)
+    if record:
+        if record.addresses:
+            return record.addresses
+        return "Address not added to this contact."
+    return NOT_FOUND_MESSAGE
+
+
 def main():
     book = load_data()
     notes = load_notes()
@@ -121,6 +191,8 @@ def main():
                 print(add_contact(args, book))
             case cmd if cmd in COMMANDS["change"]:
                 print(change_contact(args, book))
+            case cmd if cmd in COMMANDS["delete"]:
+                print(delete_contact(args, book))
             case cmd if cmd in COMMANDS["phone"]:
                 print(show_phone(args, book))
             case cmd if cmd in COMMANDS["all"]:
@@ -135,6 +207,16 @@ def main():
                 print(add_note(notes))
             case cmd if cmd in COMMANDS["show-notes"]:
                 print(show_all_notes(notes))
+            case cmd if cmd in COMMANDS["birthdays-in-days"]:
+                print(get_birthdays_in_days(args, book))
+            case cmd if cmd in COMMANDS["add-email"]:
+                print(add_email(args, book))
+            case cmd if cmd in COMMANDS["email"]:
+                print(show_email(args, book))
+            case cmd if cmd in COMMANDS["add-address"]:
+                print(add_address(args, book))
+            case cmd if cmd in COMMANDS["address"]:
+                print(show_address(args, book))
             case _:
                 print("Invalid command.")
 

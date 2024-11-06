@@ -8,6 +8,7 @@ COMMANDS = {
   "hello": {"hello"},
   "add": {"add", "додати"},
   "change": {"change"},
+  "delete": {"delete", "remove"},
   "phone": {"phone"},
   "all": {"all", "усі"},
   "add-birthday": {"add-birthday"},
@@ -15,6 +16,11 @@ COMMANDS = {
   "birthdays": {"birthdays"},
   "add-note": {"add-note"},
   "show-notes": {"show-notes"},
+  "birthdays-in-days": {"birthdays-in-days"},
+  "add-address": {"add-address"},
+  "address": {"address"},
+  "add-email": {"add-email"},
+  "email": {"email"},
 }
 
 FILE_DATA_PKL = "goit-5ton-helper/addressbook.pkl"

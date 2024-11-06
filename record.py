@@ -1,6 +1,8 @@
 from phone import Phone
 from name import Name
 from birthday import Birthday
+from email import Email
+from address import Address
 
 class Record:
     """
@@ -17,6 +19,8 @@ class Record:
         """
         self.name = Name(name)
         self.phones = []
+        self.emails = []
+        self.addresses = []
         self.birthday = None
 
     def __str__(self):
@@ -27,9 +31,15 @@ class Record:
         - str: Рядок з інформацією про контакт.
         """
         contact_info = f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
+        emails = ', '.join(e.value for e in self.emails)
+        addresses = ', '.join(a.value for a in self.addresses)
         # Додає дату народження, якщо вона вказана.
         if self.birthday:
             contact_info += f", birthday: {self.birthday}"
+        if emails:
+            contact_info += f", emails: {emails}"
+        if addresses:
+            contact_info += f", addresses: {addresses}"
         return contact_info
 
     def add_phone(self, number: str):
@@ -85,3 +95,21 @@ class Record:
         - date (str): Дата народження у форматі, визначеному константою DATE_FORMAT.
         """
         self.birthday = Birthday(date)
+
+    def add_email(self, email: Email):
+        """
+        Додає електронну пошту до запису.
+        
+        Параметри:
+        - email (Email): Об’єкт електронної пошти.
+        """
+        self.emails.append(email)
+
+    def add_address(self, address: Address):
+        """
+        Додає адресу до запису.
+        
+        Параметри:  
+        - address (Address): Об’єкт адреси.
+        """
+        self.addresses.append(address)

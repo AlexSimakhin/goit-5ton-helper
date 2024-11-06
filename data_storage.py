@@ -1,4 +1,5 @@
 import pickle
+import os
 from address_book import AddressBook
 from notes import Notes
 from constants import FILE_DATA_PKL, FILE_NOTE_DATA_PKL
@@ -11,6 +12,7 @@ def save_data(book, filename=FILE_DATA_PKL):
     - book (AddressBook): Об’єкт адресної книги, який потрібно зберегти.
     - filename (str): Ім’я файлу, в який зберігаються дані. За замовчуванням використовується значення FILE_DATA_PKL.
     """
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename, "wb") as file:
         pickle.dump(book, file)
 
