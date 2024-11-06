@@ -33,6 +33,7 @@ def load_data(filename=FILE_DATA_PKL):
         return AddressBook()
 
 def save_notes(notes, filename=FILE_NOTE_DATA_PKL):
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename, "wb") as file:
         pickle.dump(notes, file)
 
@@ -42,3 +43,4 @@ def load_notes(filename=FILE_NOTE_DATA_PKL):
             return pickle.load(file)
     except FileNotFoundError:
         return Notes()
+    
