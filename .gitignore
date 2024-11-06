@@ -1,2 +1,4 @@
 __pycache__/
 addressbook.pkl
+notes.pkl
+.DS_Store

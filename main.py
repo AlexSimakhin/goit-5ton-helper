@@ -1,9 +1,10 @@
 from address_book import AddressBook
 from record import Record
+from notes import Notes
 from address import Address
 from email import Email
 from constants import NOT_FOUND_MESSAGE, COMMANDS
-from data_storage import save_data, load_data
+from data_storage import save_data, load_data, save_notes, load_notes
 
 
 def parse_input(user_input):
@@ -139,6 +140,24 @@ def show_birthday(args, book: AddressBook):
     return NOT_FOUND_MESSAGE
 
 @input_error
+def add_note(notes: Notes):
+    title = input("Enter a title: ")
+
+    if notes.find_note_by_title(title):
+        return f"Note with title '{title}' already exists."
+    text = input("Enter a text: ")
+
+    try:
+        notes.add_note(title, text)
+        return f"Note with title: '{title}' successfully added."
+    except ValueError as e:
+        return str(e)
+
+@input_error
+def show_all_notes(notes: Notes):
+    return notes.show_all_notes()
+
+@input_error
 def show_address(args, book: AddressBook):
     if len(args) != 1:
         return "Invalid number of arguments. Usage: show-address [name]"   
@@ -153,6 +172,8 @@ def show_address(args, book: AddressBook):
 
 def main():
     book = load_data()
+    notes = load_notes()
+
     print("Welcome to the assistant bot!")
     while True:
         user_input = input("Enter a command: ")
@@ -161,6 +182,7 @@ def main():
         match command:
             case cmd if cmd in COMMANDS["close"]:
                 save_data(book)
+                save_notes(notes)
                 print("Good bye!")
                 break
             case cmd if cmd in COMMANDS["hello"]:
@@ -181,6 +203,10 @@ def main():
                 print(show_birthday(args, book))
             case cmd if cmd in COMMANDS["birthdays"]:
                 print(book.get_upcoming_birthdays())
+            case cmd if cmd in COMMANDS["add-note"]:
+                print(add_note(notes))
+            case cmd if cmd in COMMANDS["show-notes"]:
+                print(show_all_notes(notes))
             case cmd if cmd in COMMANDS["birthdays-in-days"]:
                 print(get_birthdays_in_days(args, book))
             case cmd if cmd in COMMANDS["add-email"]:

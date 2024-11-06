@@ -1,7 +1,8 @@
 import pickle
 import os
 from address_book import AddressBook
-from constants import FILE_DATA_PKL
+from notes import Notes
+from constants import FILE_DATA_PKL, FILE_NOTE_DATA_PKL
 
 def save_data(book, filename=FILE_DATA_PKL):
     """
@@ -30,3 +31,16 @@ def load_data(filename=FILE_DATA_PKL):
             return pickle.load(file)
     except FileNotFoundError:
         return AddressBook()
+
+def save_notes(notes, filename=FILE_NOTE_DATA_PKL):
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, "wb") as file:
+        pickle.dump(notes, file)
+
+def load_notes(filename=FILE_NOTE_DATA_PKL):
+    try:
+        with open(filename, "rb") as file:
+            return pickle.load(file)
+    except FileNotFoundError:
+        return Notes()
+    
