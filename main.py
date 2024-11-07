@@ -146,9 +146,10 @@ def add_note(notes: Notes):
     if notes.find_note_by_title(title):
         return f"Note with title '{title}' already exists."
     text = input("Enter a text: ")
+    tags = input("Enter tags (comma separated): ")
 
     try:
-        notes.add_note(title, text)
+        notes.add_note(title, text, tags)
         return f"Note with title: '{title}' successfully added."
     except ValueError as e:
         return str(e)
@@ -156,6 +157,56 @@ def add_note(notes: Notes):
 @input_error
 def show_all_notes(notes: Notes):
     return notes.show_all_notes()
+
+@input_error
+def change_note(notes: Notes):
+    title = input("Enter a title: ")
+    new_content = input("Enter new content: ")
+    new_tags = input("Enter new tags: ")
+
+    note = notes.find_note_by_title(title)
+
+    if note:
+        if new_content:
+            note.content = new_content
+
+        if new_tags:
+            note.tags = [tag.strip() for tag in new_tags.split(",")]
+
+        return f"Note with title '{title}' successfully edited."
+    else:
+        return f"Note with title '{title}' not found."
+
+@input_error
+def delete_note(notes: Notes):
+    title = input("Enter a title: ")
+    note = notes.find_note_by_title(title)
+    if note:
+        notes.notes.remove(note)
+        if notes.find_note_by_title(title):
+            return f"Note with title: '{title}' not found."
+        else:
+            return f"Note with title: '{title}' successfully deleted."
+    else:
+        return f"Note with title: '{title}' not found."
+
+@input_error
+def find_note_by_title(notes: Notes):
+    title = input("Enter the title to search for: ")
+    note = notes.find_note_by_title(title)
+    if note:
+        return note
+    else:
+        return f"Note with title '{title}' not found."
+
+@input_error
+def find_note_by_tag(notes: Notes):
+    tag = input("Enter the tag to search for: ")
+    notes_with_tag = notes.find_note_by_tag(tag)
+    if notes_with_tag:
+        return "\n".join(str(note) for note in notes_with_tag)
+    else:
+        return f"No notes found with tag '{tag}'."
 
 @input_error
 def show_address(args, book: AddressBook):
@@ -207,6 +258,14 @@ def main():
                 print(add_note(notes))
             case cmd if cmd in COMMANDS["show-notes"]:
                 print(show_all_notes(notes))
+            case cmd if cmd in COMMANDS["change-note"]:
+                print(change_note(notes))
+            case cmd if cmd in COMMANDS["delete-note"]:
+                print(delete_note(notes))
+            case cmd if cmd in COMMANDS["find-note-by-title"]:
+                print(find_note_by_title(notes))
+            case cmd if cmd in COMMANDS["find-note-by-tag"]:
+                print(find_note_by_tag(notes))
             case cmd if cmd in COMMANDS["birthdays-in-days"]:
                 print(get_birthdays_in_days(args, book))
             case cmd if cmd in COMMANDS["add-email"]:
