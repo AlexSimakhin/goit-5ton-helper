@@ -119,6 +119,8 @@ def main():
                 print(show_birthday(args, book))
             case cmd if cmd in COMMANDS["birthdays"]:
                 print(book.get_upcoming_birthdays())
+            case cmd if cmd in COMMANDS["search"]:
+                print(search_contact(args, book))
             case _:
                 print("Invalid command.")
 
