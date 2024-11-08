@@ -1,4 +1,5 @@
 from field import Field
+import re
 
 class Phone(Field):
     """
@@ -17,23 +18,9 @@ class Phone(Field):
         """
         self.value = self.validate_number(number)
 
-    def validate_number(self, number):
-        """
-        Перевіряє правильність формату номера телефону.
-        
-        Параметри:
-        - number (str): Номер телефону для перевірки.
-        
-        Повертає:
-        - str: Перевірений номер телефону, якщо він відповідає вимогам.
-        
-        Винятки:
-        - ValueError: Якщо номер телефону не містить рівно 10 цифр або містить нецифрові символи.
-        """
-        if len(number) != 10:
-            raise ValueError("The phone number must contain 10 digits")
 
-        if not number.isdigit():
-            raise ValueError("The phone number must contain only numbers")
-
+    def validate_number(self, number: str) -> str:
+        if not re.match(r"^\+380\d{9}$", number):
+            raise ValueError("Номер телефону повинен починатися з '+380' та містити загалом 12 цифр")
+        
         return number
