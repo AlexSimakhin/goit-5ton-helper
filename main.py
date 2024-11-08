@@ -176,7 +176,7 @@ def search_contact(args, book: AddressBook):
     name = args[0]
     record = book.find(name)
     if record:
-        return "Contact is already recorded"
+        return str(record)
     return "No contacts found with that name"
 
 def main():
