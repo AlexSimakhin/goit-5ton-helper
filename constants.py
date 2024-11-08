@@ -25,6 +25,7 @@ COMMANDS = {
   "address": {"address"},
   "add-email": {"add-email"},
   "email": {"email"},
+  "search": ["search", "find"],
 }
 
 FILE_DATA_PKL = "goit-5ton-helper/addressbook.pkl"

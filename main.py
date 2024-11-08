@@ -220,6 +220,15 @@ def show_address(args, book: AddressBook):
         return "Address not added to this contact."
     return NOT_FOUND_MESSAGE
 
+@input_error
+def search_contact(args, book: AddressBook):
+    if len(args) != 1:
+        return "Invalid number of arguments. Usage: search [name]"
+    name = args[0]
+    record = book.find(name)
+    if record:
+        return str(record)
+    return "No contacts found with that name"
 
 def main():
     book = load_data()
@@ -276,6 +285,8 @@ def main():
                 print(add_address(args, book))
             case cmd if cmd in COMMANDS["address"]:
                 print(show_address(args, book))
+            case cmd if cmd in COMMANDS["search"]:
+                print(search_contact(args, book))
             case _:
                 print("Invalid command.")
 
