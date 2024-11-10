@@ -4,7 +4,7 @@ import pickle
 import os
 from modules.address_book import AddressBook
 from modules.notes import Notes
-from .constants import FILE_DATA_PKL, FILE_NOTE_DATA_PKL
+from utils.constants import FILE_DATA_PKL, FILE_NOTE_DATA_PKL
 
 def save_data(book: AddressBook, filename=FILE_DATA_PKL):
     """Зберігає дані адресної книги у файл за допомогою pickle."""
