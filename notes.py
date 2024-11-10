@@ -1,6 +1,10 @@
+"""Модуль для управління нотатками з підтримкою тегів та змінюваним контентом."""
+
 from fields_notes import Title, Content, Tags
 
 class Note:
+    """Клас для зберігання нотатки з титулом, контентом і тегами."""
+
     def __init__(self, title, content=None, tags=None):
         if not title:
             raise ValueError("Title is required")
@@ -14,6 +18,7 @@ class Note:
         return "\n".join(filter(None, [title_str, content_str]))
 
     def add_tags(self, note, new_tags):
+        """Додає нові теги до нотатки."""
         if not new_tags:
             return
         note.tags = [str(tag).strip() for tag in note.tags.split(",")]
@@ -22,12 +27,15 @@ class Note:
                 note.tags.append(tag)
         return f"Tags added to note with title: '{note.title.value}'."
 
-
 class Notes:
+    """Клас для зберігання списку нотаток та їх обробки."""
+
     def __init__(self):
+        """Ініціалізує порожній список нотаток."""
         self.notes = []
 
     def add_note(self, title, text=None, tags=None):
+        """Додає нову нотатку до списку."""
         if self.find_note_by_title(title):
             raise ValueError(f"Note with title: '{title}' already exists.")
         note = Note(title, text, tags)
@@ -35,14 +43,15 @@ class Notes:
         return f"Note with title: '{title}' successfully added."
 
     def show_all_notes(self):
+        """Повертає всі нотатки у вигляді рядка."""
         if not self.notes:
             return "No notes available."
-
         divider_str = "-" * 40
         notes_str = "\n\n".join(f"{divider_str}\n{note}\n{divider_str}" for note in self.notes)
         return notes_str
 
     def delete_note(self, title):
+        """Видаляє нотатку за її титулом."""
         note = self.find_note_by_title(title)
         if note:
             self.notes.remove(note)
@@ -51,6 +60,7 @@ class Notes:
             return f"Note with title: '{title}' not found."
 
     def change_note(self, title, new_content, new_tags):
+        """Змінює контент або теги нотатки."""
         note = self.find_note_by_title(title)
         if note:
             note.content = Content(new_content) if new_content else note.content
@@ -60,6 +70,7 @@ class Notes:
             return f"Note with title: '{title}' not found."
 
     def find_note_by_title(self, title):
+        """Шукає нотатку за її титулом."""
         if not title:
             raise ValueError("Title is required")
         for note in self.notes:
@@ -68,6 +79,7 @@ class Notes:
         return None
 
     def find_note_by_tag(self, tag):
+        """Шукає нотатки за тегом."""
         if not tag:
             raise ValueError("Tag is required")
         notes_with_tag = [note for note in self.notes if tag in note.tags]
