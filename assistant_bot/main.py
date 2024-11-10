@@ -4,6 +4,9 @@
 телефонні номери, електронні адреси, дні народження та адреси. 
 """
 
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import Completer, Completion
+
 from modules.email import Email
 from modules.address_book import AddressBook
 from modules.record import Record
@@ -11,6 +14,51 @@ from modules.notes import Notes
 from modules.address import Address
 from utils.data_storage import save_data, load_data, save_notes, load_notes
 from utils.constants import NOT_FOUND_MESSAGE, COMMANDS
+
+def get_contact_names(book):
+    """Повертає список імен контактів з адресної книги."""
+    return [record.name.value for record in book.values()]
+
+class CommandCompleter(Completer):
+    def get_completions(self, document, complete_event):
+        """
+        Автодоповнення команд:
+        """
+        text = document.text_before_cursor
+        buffer = text.split()
+
+        if not buffer:
+            # Показати всі доступні команди
+            options = [cmd for cmds in COMMANDS.values() for cmd in cmds]
+        else:
+            cmd = buffer[0]  # Перша частина вводу — команда
+
+            if cmd == 'change-contact':
+                """Пропонуємо імена контактів та поля для зміни"""
+                if len(buffer) == 2:
+                    contact_names = get_contact_names(book)
+                    options = [name for name in contact_names if name.startswith(buffer[1])]
+
+                elif len(buffer) == 3:
+                    options = ['phone', 'email', 'name', 'birthday']
+
+                else:
+                    options = []
+
+            elif cmd in {'find-contact', 'show-address', 'delete-contact', 'show-phone', 'add-birthday', 'show-birthday', 'add-email', 'show-email', 'delete-email', 'add-address', 'delete-address'} and len(buffer) == 2:
+
+                """Пропонуємо імена контактів"""
+                contact_names = get_contact_names(book)
+                options = [name for name in contact_names if name.startswith(buffer[1])]
+            else:
+                """Пропонуємо команди, що починаються з введеного тексту"""
+                options = [command for cmds in COMMANDS.values() for command in cmds if command.startswith(buffer[-1])]
+
+        """Повертаємо можливі варіанти для автодоповнення"""
+        for option in options:
+            yield Completion(option, start_position=-len(buffer[-1]))
+
+
 
 def parse_input(user_input):
     """Парсить введений користувачем рядок на команду та аргументи."""
@@ -267,12 +315,15 @@ def main():
     потім запускає цикл, що обробляє ввід користувача.
     """
 
+    global book
     book = load_data()
     notes = load_notes()
+    
+    completer = CommandCompleter()
 
     print("Welcome to the assistant bot!")
     while True:
-        user_input = input("Enter a command: ")
+        user_input = prompt('Enter command: ', completer=completer)
         command, *args = parse_input(user_input)
 
         match command:

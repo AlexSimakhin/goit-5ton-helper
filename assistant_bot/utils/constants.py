@@ -12,6 +12,7 @@ COMMANDS = {
   "hello": {"hello"},
   "add": {"add", "додати"},
   "change": {"change"},
+  "change-contact": {"change-contact"},
   "delete": {"delete", "remove"},
   "phone": {"phone"},
   "all": {"all", "усі"},
