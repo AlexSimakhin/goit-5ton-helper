@@ -1,8 +1,8 @@
 """Модуль для представлення дати народження як поля з перевіркою формату."""
 
 from datetime import datetime
-from field import Field
-from constants import DATE_FORMAT
+from modules.field import Field
+from utils.constants import DATE_FORMAT
 
 class Birthday(Field):
     """Поле для зберігання дати народження контакту."""

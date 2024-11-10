@@ -1,6 +1,6 @@
 """Модуль для управління нотатками з підтримкою тегів та змінюваним контентом."""
 
-from fields_notes import Title, Content, Tags
+from modules.fields_notes import Title, Content, Tags
 
 class Note:
     """Клас для зберігання нотатки з титулом, контентом і тегами."""

@@ -1,6 +1,6 @@
 """Модуль для зберігання імені контакту з перевіркою значення."""
 
-from field import Field
+from modules.field import Field
 
 class Name(Field):
     """Поле для зберігання імені контакту, успадковує від Field."""

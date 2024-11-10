@@ -2,7 +2,7 @@
 
 from collections import UserDict
 from datetime import datetime, timedelta
-from constants import DATE_FORMAT
+from utils.constants import DATE_FORMAT
 
 class AddressBook(UserDict):
     """Телефонна книга для зберігання контактів."""

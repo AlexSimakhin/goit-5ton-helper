@@ -1,6 +1,6 @@
 """Модуль для представлення адрес як поля запису."""
 
-from field import Field
+from modules.field import Field
 
 class Address(Field):
     """Клас для представлення адреси як окремого поля запису."""

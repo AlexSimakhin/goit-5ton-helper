@@ -4,11 +4,11 @@
 електронними адресами, датою народження та фізичними адресами.
 """
 
-from email import Email
-from phone import Phone
-from name import Name
-from birthday import Birthday
-from address import Address
+from modules.email import Email
+from modules.phone import Phone
+from modules.name import Name
+from modules.birthday import Birthday
+from modules.address import Address
 
 class Record:
     """

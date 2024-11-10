@@ -1,20 +1,16 @@
 """
 Цей файл містить функції для роботи з адресною книгою та нотатками, включаючи додавання,
 зміну, видалення контактів і нотаток, а також управління додатковими даними, такими як
-телефонні номери, електронні адреси, дні народження та адреси. Функції обробляють
-користувацький ввід, взаємодіють із класами:
-`AddressBook`, `Notes`, `Record`, `Email`, `Address` та ін.,
-забезпечуючи управління даними. 
+телефонні номери, електронні адреси, дні народження та адреси. 
 """
 
-from email import Email
-from address_book import AddressBook
-from record import Record
-from notes import Notes
-from address import Address
-from constants import NOT_FOUND_MESSAGE, COMMANDS
-from data_storage import save_data, load_data, save_notes, load_notes
-
+from modules.email import Email
+from modules.address_book import AddressBook
+from modules.record import Record
+from modules.notes import Notes
+from modules.address import Address
+from utils.data_storage import save_data, load_data, save_notes, load_notes
+from utils.constants import NOT_FOUND_MESSAGE, COMMANDS
 
 def parse_input(user_input):
     """Парсить введений користувачем рядок на команду та аргументи."""

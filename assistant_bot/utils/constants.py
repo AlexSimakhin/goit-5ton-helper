@@ -2,6 +2,9 @@
 
 DATE_FORMAT = "%d.%m.%Y"
 
+FILE_DATA_PKL = "goit-5ton-helper/addressbook.pkl"
+FILE_NOTE_DATA_PKL = "goit-5ton-helper/notes.pkl"
+
 NOT_FOUND_MESSAGE = "Contact does not exist, you can add it"
 
 COMMANDS = {
@@ -28,6 +31,3 @@ COMMANDS = {
   "email": {"email"},
   "search": ["search", "find"],
 }
-
-FILE_DATA_PKL = "goit-5ton-helper/addressbook.pkl"
-FILE_NOTE_DATA_PKL = "goit-5ton-helper/notes.pkl"

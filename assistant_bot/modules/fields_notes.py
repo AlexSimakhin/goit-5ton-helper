@@ -1,6 +1,6 @@
 """Модуль для визначення полів нотаток: Title, Content, Tags з перевірками валідності."""
 
-from field import Field
+from modules.field import Field
 
 class Title(Field):
     """Поле для зберігання заголовка нотатки з перевіркою на порожнечу та обмеження по довжині."""

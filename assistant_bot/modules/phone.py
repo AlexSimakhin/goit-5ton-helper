@@ -1,6 +1,6 @@
 
 import re
-from field import Field
+from modules.field import Field
 
 class Phone(Field):
     """
