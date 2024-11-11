@@ -342,7 +342,6 @@ def main():
     Головна функція програми, яка ініціалізує адресну книгу та нотатки,
     потім запускає цикл, що обробляє ввід користувача.
     """
-
     global book
     book = load_data()
     notes = load_notes()
@@ -350,60 +349,66 @@ def main():
     completer = CommandCompleter()
 
     print("Welcome to the assistant bot!")
-    while True:
-        user_input = prompt('Enter command: ', completer=completer)
-        command, *args = parse_input(user_input)
+    try:
+        while True:
+            user_input = prompt('Enter command: ', completer=completer)
+            command, *args = parse_input(user_input)
 
-        match command:
-            case cmd if cmd in COMMANDS["close"]:
-                save_data(book)
-                save_notes(notes)
-                print("Good bye!")
-                break
-            case cmd if cmd in COMMANDS["hello"]:
-                print("How can I help you?")
-            case cmd if cmd in COMMANDS["add"]:
-                print(add_contact(args, book))
-            case cmd if cmd in COMMANDS["change-contact"]:
-                print(change_contact(args, book))
-            case cmd if cmd in COMMANDS["delete"]:
-                print(delete_contact(args, book))
-            case cmd if cmd in COMMANDS["phone"]:
-                print(show_phone(args, book))
-            case cmd if cmd in COMMANDS["all"]:
-                print(book)
-            case cmd if cmd in COMMANDS["add-birthday"]:
-                print(add_birthday(args, book))
-            case cmd if cmd in COMMANDS["show-birthday"]:
-                print(show_birthday(args, book))
-            case cmd if cmd in COMMANDS["birthdays"]:
-                print(book.get_upcoming_birthdays())
-            case cmd if cmd in COMMANDS["add-note"]:
-                print(add_note(notes))
-            case cmd if cmd in COMMANDS["show-notes"]:
-                print(show_all_notes(notes))
-            case cmd if cmd in COMMANDS["change-note"]:
-                print(change_note(notes))
-            case cmd if cmd in COMMANDS["delete-note"]:
-                print(delete_note(notes))
-            case cmd if cmd in COMMANDS["find-note-by-title"]:
-                print(find_note_by_title(notes))
-            case cmd if cmd in COMMANDS["find-note-by-tag"]:
-                print(find_note_by_tag(notes))
-            case cmd if cmd in COMMANDS["birthdays-in-days"]:
-                print(get_birthdays_in_days(args, book))
-            case cmd if cmd in COMMANDS["add-email"]:
-                print(add_email(args, book))
-            case cmd if cmd in COMMANDS["email"]:
-                print(show_email(args, book))
-            case cmd if cmd in COMMANDS["add-address"]:
-                print(add_address(args, book))
-            case cmd if cmd in COMMANDS["address"]:
-                print(show_address(args, book))
-            case cmd if cmd in COMMANDS["search"]:
-                print(search_contact(args, book))
-            case _:
-                print("Invalid command.")
+            match command:
+                case cmd if cmd in COMMANDS["close"]:
+                    print("Good bye!")
+                    break
+                case cmd if cmd in COMMANDS["hello"]:
+                    print("How can I help you?")
+                case cmd if cmd in COMMANDS["add"]:
+                    print(add_contact(args, book))
+                case cmd if cmd in COMMANDS["change-contact"]:
+                    print(change_contact(args, book))
+                case cmd if cmd in COMMANDS["delete"]:
+                    print(delete_contact(args, book))
+                case cmd if cmd in COMMANDS["phone"]:
+                    print(show_phone(args, book))
+                case cmd if cmd in COMMANDS["all"]:
+                    print(book)
+                case cmd if cmd in COMMANDS["add-birthday"]:
+                    print(add_birthday(args, book))
+                case cmd if cmd in COMMANDS["show-birthday"]:
+                    print(show_birthday(args, book))
+                case cmd if cmd in COMMANDS["birthdays"]:
+                    print(book.get_upcoming_birthdays())
+                case cmd if cmd in COMMANDS["add-note"]:
+                    print(add_note(notes))
+                case cmd if cmd in COMMANDS["show-notes"]:
+                    print(show_all_notes(notes))
+                case cmd if cmd in COMMANDS["change-note"]:
+                    print(change_note(notes))
+                case cmd if cmd in COMMANDS["delete-note"]:
+                    print(delete_note(notes))
+                case cmd if cmd in COMMANDS["find-note-by-title"]:
+                    print(find_note_by_title(notes))
+                case cmd if cmd in COMMANDS["find-note-by-tag"]:
+                    print(find_note_by_tag(notes))
+                case cmd if cmd in COMMANDS["birthdays-in-days"]:
+                    print(get_birthdays_in_days(args, book))
+                case cmd if cmd in COMMANDS["add-email"]:
+                    print(add_email(args, book))
+                case cmd if cmd in COMMANDS["email"]:
+                    print(show_email(args, book))
+                case cmd if cmd in COMMANDS["add-address"]:
+                    print(add_address(args, book))
+                case cmd if cmd in COMMANDS["address"]:
+                    print(show_address(args, book))
+                case cmd if cmd in COMMANDS["search"]:
+                    print(search_contact(args, book))
+                case _:
+                    print("Invalid command.")
+    except KeyboardInterrupt:
+        print("\nThe program has been interrupted by user.")
+    finally:
+        save_data(book)
+        save_notes(notes)
+        print("Data saved!")
 
 if __name__ == "__main__":
     main()
+    
