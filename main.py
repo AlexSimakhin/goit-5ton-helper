@@ -69,16 +69,6 @@ def add_birthday(args, book: AddressBook):
     return NOT_FOUND_MESSAGE
 
 @input_error
-def search_contact(args, book: AddressBook):
-    if lent(args) != 1:
-        return "Invalid number of arguments. Usage: search [name]"
-    name = args[0].lower()
-    record = book.find(name).lower
-    if record:
-        return "Contact is already recorded"
-    return "No contacts found with that name"
-
-@input_error
 def show_birthday(args, book: AddressBook):
     if len(args) != 1:
         return "Invalid number of arguments. Usage: show-birthday [name]"   
@@ -119,8 +109,6 @@ def main():
                 print(show_birthday(args, book))
             case cmd if cmd in COMMANDS["birthdays"]:
                 print(book.get_upcoming_birthdays())
-            case cmd if cmd in COMMANDS["search"]:
-                print(search_contact(args, book))
             case _:
                 print("Invalid command.")
 
