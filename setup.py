@@ -9,6 +9,6 @@ setup(
     license="MIT",
     packages=find_namespace_packages(where="assistant_bot"),
     package_dir={"": "assistant_bot"},
-    install_requires=["colorama", "prompt_toolkit"],
+    install_requires=["prompt_toolkit"],
     entry_points={"console_scripts": ["hi-bot=main:main"]},
 )

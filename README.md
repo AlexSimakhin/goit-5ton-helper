@@ -51,8 +51,7 @@ The GoIT 5Ton Helper Bot provides the following functionalities:
 Ensure you have `setuptools` and `prompt_toolkit` installed:
 
 ```bash
-pip install setuptools
-pip install prompt_toolkit
+pip install setuptools prompt_toolkit
 ```
 
 The last command will install package and you will be able to use it anywhere

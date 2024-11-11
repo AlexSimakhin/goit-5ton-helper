@@ -39,6 +39,10 @@ class Record:
         """Додає номер телефону до запису."""
         self.phones.append(Phone(number))
 
+    def change_name(self, new_name):
+        """Змінює номер телефону."""
+        self.name = Name(new_name)
+
     def remove_phone(self, number: str):
         """Видаляє номер телефону з запису."""
         self.phones = list(filter(lambda phone: phone.value != number, self.phones))
@@ -63,6 +67,14 @@ class Record:
     def add_email(self, email: Email):
         """Додає електронну пошту до запису."""
         self.emails.append(email)
+
+    def edit_email(self, old_email, new_email):
+        """Змінює електронну пошту."""
+        for email in self.emails:
+            if email.value == old_email:
+                email.value = new_email
+                return
+        raise ValueError(f"Email '{old_email}' not found in contact.")
 
     def add_address(self, address: Address):
         """Додає адресу до запису."""

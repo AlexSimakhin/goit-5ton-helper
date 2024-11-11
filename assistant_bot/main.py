@@ -94,15 +94,43 @@ def add_contact(args, book: AddressBook):
 
 @input_error
 def change_contact(args, book: AddressBook):
-    """Змінює номер телефону у записі контакту за старим номером."""
-    if len(args) != 3:
-        return "Invalid number of arguments. Usage: change [name] [old_number] [new_number]"
-    name, old_number, new_number = args
+    if len(args) != 4:
+        return "Invalid number of arguments. Usage: change-contact [name] [field] [old_value] [new_value]"
+
+    name, field, old_value, new_value = args
     record = book.find(name)
-    if record is None:
+    if not isinstance(record, Record):
         return NOT_FOUND_MESSAGE
-    record.edit_phone(old_number, new_number)
-    return "Phone changed"
+
+    field = field.lower()
+    if field == "phone":
+        try:
+            record.edit_phone(old_value, new_value)
+        except ValueError as e:
+            return str(e)
+
+    elif field == "email":
+        try:
+            record.edit_email(old_value, new_value)
+        except ValueError as e:
+            return str(e)
+
+    elif field == "name":
+        try:
+            record.change_name(new_value)
+        except ValueError as e:
+            return str(e)
+
+    elif field == "birthday":
+        try:
+            record.add_birthday(new_value)
+        except ValueError as e:
+            return str(e)
+
+    else:
+        return f"Field '{field}' is not supported. Use 'phone', 'email', 'name', or 'birthday'."
+
+    return f"{field.capitalize()} changed"
 
 
 @input_error
@@ -318,7 +346,7 @@ def main():
     global book
     book = load_data()
     notes = load_notes()
-    
+
     completer = CommandCompleter()
 
     print("Welcome to the assistant bot!")
@@ -336,7 +364,7 @@ def main():
                 print("How can I help you?")
             case cmd if cmd in COMMANDS["add"]:
                 print(add_contact(args, book))
-            case cmd if cmd in COMMANDS["change"]:
+            case cmd if cmd in COMMANDS["change-contact"]:
                 print(change_contact(args, book))
             case cmd if cmd in COMMANDS["delete"]:
                 print(delete_contact(args, book))
